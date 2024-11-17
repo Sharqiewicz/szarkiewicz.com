@@ -13,7 +13,12 @@ extend({ RoundedBoxGeometry });
 
 const usePositions = (count: number, gap: number) =>
   useMemo(
-    () => Array.from({ length: count }, (_, i) => [i * (1 + gap), 0, 0]),
+    () =>
+      Array.from({ length: count }, (_, i) => [
+        (i - count / 2) * (2 + gap),
+        0,
+        0,
+      ]), // Centered around origin
     [count, gap]
   );
 
@@ -139,7 +144,8 @@ function Cubes({ gap = 0.5, count = CUBES_COUNT }) {
       frames={Infinity}
       ref={ref}
     >
-      <roundedBoxGeometry args={[1, 1, 1, 2, 0.15]} />
+      <roundedBoxGeometry args={[2, 2, 2, 2, 0.15]} />{' '}
+      {/* Increased cube size from 1 to 2 */}
       <meshStandardMaterial />
       {positions.map((position, index) => (
         <Cube
@@ -169,7 +175,7 @@ export const BlockchainAnimation = () => (
       }}
       shadows
       gl={{ antialias: false }}
-      camera={{ position: [12, 22, 12], fov: 25 }}
+      camera={{ position: [10, 10, 22], fov: 25 }}
     >
       <OrbitControls enableZoom={false} enablePan={false} />
       <color attach="background" args={['#2A2A48']} />
