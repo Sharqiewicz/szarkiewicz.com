@@ -31,6 +31,9 @@ const SOCIALS = [
   },
 ];
 
+const MIN_PROGRESS = 0.001;
+const MAX_PROGRESS = 0.98;
+
 export const Socials = () => {
   const sectionRef = useRef(null);
   const socialsRef = useRef(null);
@@ -86,23 +89,32 @@ export const Socials = () => {
       // Skip scroll animation if hover animation is active
       if (hoverAnimationRef.current?.isActive()) return;
 
-      if (progress < 0.001) {
+      if (progress < MIN_PROGRESS) {
         gsap.to(section, {
           width: 400,
           left: '6%',
           duration: 0.3,
+          borderRadius: '1.5rem',
+          height: 54,
+          bottom: '2.5rem',
         });
-      } else if (progress > 0.98) {
+      } else if (progress > MAX_PROGRESS) {
         gsap.to(section, {
           width: '100vw',
           left: 0,
+          borderRadius: 0,
           duration: 0.3,
+          height: 254,
+          bottom: 0,
         });
       } else {
         gsap.to(section, {
           width: 80,
           left: '46%',
           duration: 0.3,
+          borderRadius: '1.5rem',
+          height: 54,
+          bottom: '2.5rem',
         });
       }
     });
@@ -111,7 +123,7 @@ export const Socials = () => {
     section.addEventListener('mouseenter', () => {
       const progress = lenis.scroll / lenis.limit; // Get the latest scroll progress
 
-      if (progress > 0.001) {
+      if (progress > MIN_PROGRESS && progress < MAX_PROGRESS) {
         setIsHovered(true);
         hoverAnimationRef.current = gsap.timeline();
         hoverAnimationRef.current.to(section, {
@@ -124,7 +136,7 @@ export const Socials = () => {
     section.addEventListener('mouseleave', () => {
       const progress = lenis.scroll / lenis.limit; // Get the latest scroll progress
 
-      if (progress > 0.001) {
+      if (progress > MIN_PROGRESS && progress < MAX_PROGRESS) {
         setIsHovered(false);
         hoverAnimationRef.current = gsap.timeline();
         hoverAnimationRef.current.to(section, {
