@@ -21,7 +21,7 @@ export const Welcome = () => (
         <Socials />
       </section>
     </div>
-    <div className="">
+    <div>
       <Canvas
         camera={{ position: [0, 0, 1] }}
         style={{ width: '100%', height: '100vh' }}

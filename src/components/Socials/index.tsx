@@ -1,4 +1,6 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import Lenis from 'lenis';
 import Image from 'next/image';
 
 const SOCIALS = [
@@ -17,7 +19,6 @@ const SOCIALS = [
     src: '/socials/linkedin.svg',
     url: 'https://www.linkedin.com/in/kacperszarkiewicz/',
   },
-
   {
     alt: 'youtube',
     src: '/socials/youtube.svg',
@@ -30,63 +31,120 @@ const SOCIALS = [
   },
 ];
 
-const containerVariants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: 1,
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-  },
-};
-
 export const Socials = () => {
-  const { scrollYProgress } = useScroll();
+  const sectionRef = useRef(null);
+  const socialsRef = useRef(null);
+  const hoverAnimationRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
 
-  const width = useTransform(
-    scrollYProgress,
-    [0, 0.03, 0.95, 1],
-    [400, 100, 100, '100vw']
-  );
+  useEffect(() => {
+    const section = sectionRef.current;
+    const socials = socialsRef.current;
 
-  const left = useTransform(
-    scrollYProgress,
-    [0, 0.05, 0.8, 1],
-    ['6%', '46%', '46%', 0]
-  );
+    const tl = gsap.timeline();
+    tl.fromTo(
+      section,
+      { width: 0, height: 54, display: 'none' },
+      { width: 400, display: 'flex', duration: 1 }
+    );
 
-  const display = useTransform(
-    scrollYProgress,
-    [0, 0.08, 0.98, 1],
-    ['grid', 'none', 'none', 'grid']
-  );
+    tl.fromTo(
+      socials.children,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+        duration: 0.5,
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    // Initialize Lenis
+    const lenis = new Lenis({
+      smooth: true,
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smoothTouch: true,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Scroll-based animations using Lenis
+    lenis.on('scroll', ({ scroll, limit }) => {
+      if (isHovered) return;
+
+      const progress = scroll / limit;
+
+      // Skip scroll animation if hover animation is active
+      if (hoverAnimationRef.current?.isActive()) return;
+
+      if (progress < 0.001) {
+        gsap.to(section, {
+          width: 400,
+          left: '6%',
+          duration: 0.3,
+        });
+      } else if (progress > 0.98) {
+        gsap.to(section, {
+          width: '100vw',
+          left: 0,
+          duration: 0.3,
+        });
+      } else {
+        gsap.to(section, {
+          width: 80,
+          left: '46%',
+          duration: 0.3,
+        });
+      }
+    });
+
+    // Hover animations
+    section.addEventListener('mouseenter', () => {
+      const progress = lenis.scroll / lenis.limit; // Get the latest scroll progress
+
+      if (progress > 0.001) {
+        setIsHovered(true);
+        hoverAnimationRef.current = gsap.timeline();
+        hoverAnimationRef.current.to(section, {
+          width: 400,
+          duration: 0.3,
+        });
+      }
+    });
+
+    section.addEventListener('mouseleave', () => {
+      const progress = lenis.scroll / lenis.limit; // Get the latest scroll progress
+
+      if (progress > 0.001) {
+        setIsHovered(false);
+        hoverAnimationRef.current = gsap.timeline();
+        hoverAnimationRef.current.to(section, {
+          width: 80,
+          duration: 0.3,
+        });
+      }
+    });
+
+    return () => {
+      lenis.destroy();
+      section.removeEventListener('mouseenter', null);
+      section.removeEventListener('mouseleave', null);
+    };
+  }, [isHovered]);
 
   return (
-    <motion.section
-      initial={{ height: 54, width: 0, display: 'none' }}
-      animate={{ width: 400, display: 'flex' }}
-      transition={{
-        duration: 1,
-      }}
-      className="bg-[#2A2A48] rounded-3xl py-3 px-6 fixed bottom-10 flex"
-      style={{
-        width,
-        left,
-      }}
+    <section
+      ref={sectionRef}
+      className="bg-primary rounded-3xl py-3 px-6 fixed bottom-10 flex z-50 cursor-pointer"
     >
       <Image
         src="/logo-light.svg"
@@ -94,18 +152,12 @@ export const Socials = () => {
         height={30}
         alt="Sharqiewicz logo"
       />
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="grid-cols-5 gap-6 items-center mx-auto"
-        style={{
-          display,
-        }}
+      <div
+        ref={socialsRef}
+        className="grid grid-cols-5 gap-6 items-center mx-auto"
       >
         {SOCIALS.map((social) => (
-          <motion.a
-            variants={itemVariants}
+          <a
             key={social.alt}
             href={social.url}
             target="_blank"
@@ -118,9 +170,9 @@ export const Socials = () => {
               height={30}
               alt={social.alt}
             />
-          </motion.a>
+          </a>
         ))}
-      </motion.div>
-    </motion.section>
+      </div>
+    </section>
   );
 };
