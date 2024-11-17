@@ -1,6 +1,35 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
+const SOCIALS = [
+  {
+    alt: 'github',
+    src: '/socials/github.svg',
+    url: 'https://github.com/Sharqiewicz',
+  },
+  {
+    alt: 'x',
+    src: '/socials/x.svg',
+    url: 'https://x.com/sharqiewicz',
+  },
+  {
+    alt: 'linkedin',
+    src: '/socials/linkedin.svg',
+    url: 'https://www.linkedin.com/in/kacperszarkiewicz/',
+  },
+
+  {
+    alt: 'youtube',
+    src: '/socials/youtube.svg',
+    url: 'https://www.youtube.com/@kszarkiewicz',
+  },
+  {
+    alt: 'mail',
+    src: '/socials/mail.svg',
+    url: 'mailto:szarkiewiczmail@gmail.com',
+  },
+];
+
 export const Socials = () => {
   const { scrollYProgress } = useScroll();
 
@@ -19,7 +48,7 @@ export const Socials = () => {
   const display = useTransform(
     scrollYProgress,
     [0, 0.04, 0.98, 1],
-    ['block', 'none', 'none', 'block']
+    ['grid', 'none', 'none', 'grid']
   );
 
   return (
@@ -37,11 +66,22 @@ export const Socials = () => {
         alt="Sharqiewicz logo"
       />
       <motion.div
+        className="grid-cols-5 gap-6 items-center mx-auto"
         style={{
           display,
         }}
       >
-        <p className="text-white">THIS IS HIDDEN SECTION</p>
+        {SOCIALS.map((social) => (
+          <a key={social.alt} href={social.url}>
+            <Image
+              className="hover:scale-105 transition opacity-80 hover:opacity-100"
+              src={social.src}
+              width={30}
+              height={30}
+              alt={social.alt}
+            />
+          </a>
+        ))}
       </motion.div>
     </motion.section>
   );
