@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 
 const anybodyCondensed = localFont({
-  src: './fonts/Anybody_Condensed-Black.ttf',
+  src: './fonts/Anybody-Font.ttf',
   variable: '--font-anybody-condensed',
   weight: '100 900',
 });

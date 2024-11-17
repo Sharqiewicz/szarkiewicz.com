@@ -8,14 +8,16 @@ import { Socials } from '@/components/Socials';
 
 export const Welcome = () => (
   <section className="grid grid-cols-2">
-    <div className="">
-      <Logo />
+    <div className="flex flex-col justify-between mx-20">
+      <div className="mt-12">
+        <Logo />
+      </div>
       <section>
-        <h1 className="font-anybody">Kacper Szarkiewicz</h1>
-        <h2 className="font-anybody">dApp Engineer</h2>
+        <h1 className="font-anybody text-7xl font-bold">Kacper Szarkiewicz</h1>
+        <h2 className="font-anybody text-4xl">dApp Engineer</h2>
       </section>
       <section>
-        <p>let&#39;s build together</p>
+        <p className="mb-28 text-xl">let&#39;s build together</p>
         <Socials />
       </section>
     </div>

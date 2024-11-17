@@ -1,14 +1,18 @@
-import { useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-export const Logo = () => {
+interface LogoProps {
+  xStartPosition?: number;
+}
+
+export const Logo: FC<LogoProps> = ({ xStartPosition = -800 }) => {
   const svgRef = useRef(null);
 
   useEffect(() => {
     gsap.fromTo(
       svgRef.current?.children,
       {
-        x: -300,
+        x: xStartPosition,
       },
       {
         stagger: 0.1,
@@ -17,7 +21,7 @@ export const Logo = () => {
         ease: 'power3.inOut',
       }
     );
-  }, []);
+  }, [xStartPosition]);
 
   const handleMouseEnter = () => {
     gsap.to(svgRef.current?.children, {
