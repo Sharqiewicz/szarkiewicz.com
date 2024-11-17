@@ -5,7 +5,7 @@ import { Welcome } from '@/sections/Welcome';
 export default function Home() {
   return (
     <ReactLenis root options={{ autoRaf: true }}>
-      <main className="flex">
+      <main className="h-[8000px]">
         <Welcome />
       </main>
     </ReactLenis>

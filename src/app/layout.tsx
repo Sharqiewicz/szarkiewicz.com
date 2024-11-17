@@ -1,21 +1,27 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+import './globals.css';
+
+const anybodyCondensed = localFont({
+  src: './fonts/Anybody_Condensed-Black.ttf',
+  variable: '--font-anybody-condensed',
+  weight: '100 900',
+});
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+  src: './fonts/GeistVF.woff',
+  variable: '--font-geist-sans',
+  weight: '100 900',
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+  src: './fonts/GeistMonoVF.woff',
+  variable: '--font-geist-mono',
+  weight: '100 900',
 });
 
 export const metadata: Metadata = {
-  title: "szarkiewicz.com",
-  description: "Kacper Szarkiewicz Sharqi personal website",
+  title: 'szarkiewicz.com',
+  description: 'Kacper Szarkiewicz Sharqi personal website',
 };
 
 export default function RootLayout({
@@ -26,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${anybodyCondensed.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>
