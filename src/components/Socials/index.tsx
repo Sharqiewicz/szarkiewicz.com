@@ -37,6 +37,8 @@ const MAX_PROGRESS = 0.98;
 export const Socials = () => {
   const sectionRef = useRef(null);
   const socialsRef = useRef(null);
+  const scrollRef = useRef(0);
+  const limitRef = useRef(0);
   const hoverAnimationRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const [showFooter, setShowFooter] = useState(false);
@@ -83,9 +85,14 @@ export const Socials = () => {
 
     // Scroll-based animations using Lenis
     lenis.on('scroll', ({ scroll, limit }) => {
-      if (isHovered) return;
+      scrollRef.current = scroll;
+      limitRef.current = limit;
 
       const progress = scroll / limit;
+
+      if (!(progress > MIN_PROGRESS) && !(progress < MAX_PROGRESS)) {
+        if (isHovered) return;
+      }
 
       // Skip scroll animation if hover animation is active
       if (hoverAnimationRef.current?.isActive()) return;
@@ -100,13 +107,13 @@ export const Socials = () => {
           bottom: '2.5rem',
         });
         if (showFooter) setShowFooter(false);
-      } else if (progress > MAX_PROGRESS) {
+      } else if (progress >= MAX_PROGRESS) {
         gsap.to(section, {
           width: '100%',
           left: 0,
           borderRadius: 0,
           duration: 0.3,
-          height: 254,
+          height: 154,
           bottom: 0,
         });
         if (!showFooter) setShowFooter(true);
@@ -123,11 +130,16 @@ export const Socials = () => {
       }
     });
 
-    // Hover animations
     section.addEventListener('mouseenter', () => {
-      const progress = lenis.scroll / lenis.limit; // Get the latest scroll progress
+      const scroll = scrollRef.current;
+      const limit = limitRef.current;
+      if (!lenis) return;
 
-      if (progress > MIN_PROGRESS && progress < 0.97) {
+      const progress = scroll / limit;
+
+      if (progress > MIN_PROGRESS && progress < MAX_PROGRESS) {
+        console.log(progress);
+        console.log('HOVERED 1');
         setIsHovered(true);
         hoverAnimationRef.current = gsap.timeline();
         hoverAnimationRef.current.to(section, {
@@ -138,9 +150,15 @@ export const Socials = () => {
     });
 
     section.addEventListener('mouseleave', () => {
-      const progress = lenis.scroll / lenis.limit; // Get the latest scroll progress
+      const scroll = scrollRef.current;
+      const limit = limitRef.current;
+      if (!lenis) return;
 
-      if (progress > MIN_PROGRESS && progress < 0.97) {
+      const progress = scroll / limit;
+
+      if (progress > MIN_PROGRESS && progress < MAX_PROGRESS) {
+        console.log(progress);
+        console.log('HOVERED 2');
         setIsHovered(false);
         hoverAnimationRef.current = gsap.timeline();
         hoverAnimationRef.current.to(section, {
