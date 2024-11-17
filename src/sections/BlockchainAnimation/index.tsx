@@ -3,11 +3,11 @@
 import * as THREE from 'three';
 import { useRef, useMemo, useState } from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
-import { OrbitControls, Instances, Instance, Html } from '@react-three/drei';
+import { Instances, Instance, Html, OrbitControls } from '@react-three/drei';
 import { EffectComposer, N8AO, Bloom } from '@react-three/postprocessing';
 import { RoundedBoxGeometry } from 'three-stdlib';
 
-const CUBES_COUNT = 8;
+const CUBES_COUNT = 5;
 
 extend({ RoundedBoxGeometry });
 
@@ -23,34 +23,22 @@ interface CubeDetail {
 }
 
 const cubeDetails: CubeDetail[] = [
-  { color: '#FF6B6B', description: 'Red cube: Represents energy and passion.' },
+  { color: '#4ECDC4', description: 'Deloitte Credential Wallet' },
   {
     color: '#4ECDC4',
-    description: 'Teal cube: Symbolizes balance and harmony.',
+    description: 'Deloitte KYC-Credentials',
   },
   {
-    color: '#45B7D1',
-    description: 'Blue cube: Signifies trust and stability.',
+    color: '#907EA0',
+    description: 'Pendulum Portal',
   },
   {
-    color: '#FFA07A',
-    description: 'Salmon cube: Denotes creativity and enthusiasm.',
+    color: '#0F4DC0',
+    description: 'Vortex Finance',
   },
   {
-    color: '#98D8C8',
-    description: 'Mint cube: Embodies freshness and growth.',
-  },
-  {
-    color: '#F7DC6F',
-    description: 'Yellow cube: Stands for optimism and clarity.',
-  },
-  {
-    color: '#BB8FCE',
-    description: 'Lavender cube: Represents imagination and spirituality.',
-  },
-  {
-    color: '#F1948A',
-    description: 'Coral cube: Symbolizes nurturing and compassion.',
+    color: '#4EE59A',
+    description: 'Foucoco Faucet',
   },
 ];
 
@@ -165,27 +153,40 @@ function Cubes({ gap = 0.5, count = CUBES_COUNT }) {
   );
 }
 
-export const Technologies = () => (
-  <Canvas
-    shadows
-    gl={{ antialias: false }}
-    camera={{ position: [32, 32, 32], fov: 25 }}
-  >
-    <color attach="background" args={['#2A2A48']} />
-    <ambientLight intensity={Math.PI / 2} />
-    <spotLight
-      position={[-10, 20, 20]}
-      angle={0.15}
-      penumbra={1}
-      decay={0}
-      intensity={2}
-      castShadow
-    />
-    <Cubes gap={0.5} count={CUBES_COUNT} />
-    <EffectComposer>
-      <N8AO aoRadius={1} intensity={1} />
-      <Bloom mipmapBlur luminanceThreshold={1} levels={7} intensity={1} />
-    </EffectComposer>
-    <OrbitControls />
-  </Canvas>
+export const BlockchainAnimation = () => (
+  <section className="bg-primary pt-20">
+    <p className="font-anybody text-gray-300 text-3xl pt-5 mx-auto text-center">
+      My Web3/Blockchain Projects
+    </p>
+    <p className=" text-gray-300 text-s mx-auto text-center">
+      Although I have built 20+ apps in my life (frontend and mobile), here - in
+      this Blockchain I am only posting blockchain-related ones.
+    </p>
+    <Canvas
+      style={{
+        height: 500,
+        width: '100vw',
+      }}
+      shadows
+      gl={{ antialias: false }}
+      camera={{ position: [12, 22, 12], fov: 25 }}
+    >
+      <OrbitControls enableZoom={false} enablePan={false} />
+      <color attach="background" args={['#2A2A48']} />
+      <ambientLight intensity={Math.PI / 2} />
+      <spotLight
+        position={[-10, 20, 20]}
+        angle={0.15}
+        penumbra={1}
+        decay={0}
+        intensity={2}
+        castShadow
+      />
+      <Cubes gap={0.5} count={CUBES_COUNT} />
+      <EffectComposer>
+        <N8AO aoRadius={1} intensity={1} />
+        <Bloom mipmapBlur luminanceThreshold={1} levels={7} intensity={1} />
+      </EffectComposer>
+    </Canvas>
+  </section>
 );

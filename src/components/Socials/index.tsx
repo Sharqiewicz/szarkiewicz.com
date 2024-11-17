@@ -50,7 +50,7 @@ export const Socials = () => {
     const tl = gsap.timeline();
     tl.fromTo(
       section,
-      { width: 0, height: 54, display: 'none' },
+      { width: 0, height: 56, display: 'none' },
       { width: 400, display: 'flex', duration: 1 }
     );
 
@@ -103,7 +103,7 @@ export const Socials = () => {
           left: '6%',
           duration: 0.3,
           borderRadius: '1.5rem',
-          height: 54,
+          height: 56,
           bottom: '2.5rem',
         });
         if (showFooter) setShowFooter(false);
@@ -123,7 +123,7 @@ export const Socials = () => {
           left: '46%',
           duration: 0.3,
           borderRadius: '1.5rem',
-          height: 54,
+          height: 56,
           bottom: '2.5rem',
         });
         if (showFooter) setShowFooter(false);
@@ -178,7 +178,7 @@ export const Socials = () => {
   return (
     <section
       ref={sectionRef}
-      className="bg-primary rounded-3xl py-3 px-6 flex-col justify-center items-center fixed bottom-10 z-50 cursor-pointer"
+      className="border border-accent border-2 bg-primary rounded-3xl py-3 px-6 flex-col justify-center items-center fixed bottom-10 z-50 cursor-pointer"
     >
       <div className="flex justify-between w-full">
         <Image
