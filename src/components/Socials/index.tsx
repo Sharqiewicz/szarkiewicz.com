@@ -39,6 +39,7 @@ export const Socials = () => {
   const socialsRef = useRef(null);
   const hoverAnimationRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [showFooter, setShowFooter] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -98,15 +99,17 @@ export const Socials = () => {
           height: 54,
           bottom: '2.5rem',
         });
+        if (showFooter) setShowFooter(false);
       } else if (progress > MAX_PROGRESS) {
         gsap.to(section, {
-          width: '100vw',
+          width: '100%',
           left: 0,
           borderRadius: 0,
           duration: 0.3,
           height: 254,
           bottom: 0,
         });
+        if (!showFooter) setShowFooter(true);
       } else {
         gsap.to(section, {
           width: 80,
@@ -116,6 +119,7 @@ export const Socials = () => {
           height: 54,
           bottom: '2.5rem',
         });
+        if (showFooter) setShowFooter(false);
       }
     });
 
@@ -123,7 +127,7 @@ export const Socials = () => {
     section.addEventListener('mouseenter', () => {
       const progress = lenis.scroll / lenis.limit; // Get the latest scroll progress
 
-      if (progress > MIN_PROGRESS && progress < MAX_PROGRESS) {
+      if (progress > MIN_PROGRESS && progress < 0.97) {
         setIsHovered(true);
         hoverAnimationRef.current = gsap.timeline();
         hoverAnimationRef.current.to(section, {
@@ -136,7 +140,7 @@ export const Socials = () => {
     section.addEventListener('mouseleave', () => {
       const progress = lenis.scroll / lenis.limit; // Get the latest scroll progress
 
-      if (progress > MIN_PROGRESS && progress < MAX_PROGRESS) {
+      if (progress > MIN_PROGRESS && progress < 0.97) {
         setIsHovered(false);
         hoverAnimationRef.current = gsap.timeline();
         hoverAnimationRef.current.to(section, {
@@ -151,40 +155,47 @@ export const Socials = () => {
       section.removeEventListener('mouseenter', null);
       section.removeEventListener('mouseleave', null);
     };
-  }, [isHovered]);
+  }, [isHovered, showFooter]);
 
   return (
     <section
       ref={sectionRef}
-      className="bg-primary rounded-3xl py-3 px-6 fixed bottom-10 flex z-50 cursor-pointer"
+      className="bg-primary rounded-3xl py-3 px-6 flex-col justify-center items-center fixed bottom-10 z-50 cursor-pointer"
     >
-      <Image
-        src="/logo-light.svg"
-        width={30}
-        height={30}
-        alt="Sharqiewicz logo"
-      />
-      <div
-        ref={socialsRef}
-        className="grid grid-cols-5 gap-6 items-center mx-auto"
-      >
-        {SOCIALS.map((social) => (
-          <a
-            key={social.alt}
-            href={social.url}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Image
-              className="hover:scale-105 transition opacity-80 hover:opacity-100"
-              src={social.src}
-              width={30}
-              height={30}
-              alt={social.alt}
-            />
-          </a>
-        ))}
+      <div className="flex justify-between w-full">
+        <Image
+          src="/logo-light.svg"
+          width={30}
+          height={30}
+          alt="Sharqiewicz logo"
+        />
+        <div
+          ref={socialsRef}
+          className="grid grid-cols-5 gap-6 items-center mx-auto"
+        >
+          {SOCIALS.map((social) => (
+            <a
+              key={social.alt}
+              href={social.url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Image
+                className="hover:scale-105 transition opacity-80 hover:opacity-100"
+                src={social.src}
+                width={30}
+                height={30}
+                alt={social.alt}
+              />
+            </a>
+          ))}
+        </div>
       </div>
+      {showFooter && (
+        <footer className="text-center my-5 ml-7 font-anybody text-gray-400 font-bold text-xs text-center">
+          Made with <span className="text-accent">❤</span> by Kacper Szarkiewicz
+        </footer>
+      )}
     </section>
   );
 };
