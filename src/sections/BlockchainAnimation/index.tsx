@@ -168,6 +168,10 @@ export const BlockchainAnimation = () => (
       Although I have built 20+ apps in my life (frontend and mobile), here - in
       this Blockchain I am only posting blockchain-related ones.
     </p>
+    <p className="text-gray-300 text-s mx-auto text-center">
+      (I was developing non-blockchain apps for 4+ years, ask me for more
+      details)
+    </p>
     <Canvas
       style={{
         height: 500,
