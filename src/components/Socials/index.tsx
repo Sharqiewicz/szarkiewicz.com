@@ -69,15 +69,9 @@ export const Socials = () => {
   useEffect(() => {
     const section = sectionRef.current;
 
-    // Initialize Lenis
-    const lenis = new Lenis({
-      smooth: true,
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smoothTouch: true,
-    });
+    const lenis = new Lenis();
 
-    function raf(time) {
+    function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
