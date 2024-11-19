@@ -18,7 +18,7 @@ const usePositions = (count: number, gap: number) =>
         (i - count / 2) * (2 + gap),
         0,
         0,
-      ]), // Centered around origin
+      ]),
     [count, gap]
   );
 
@@ -144,9 +144,7 @@ function Cubes({ gap = 0.5, count = CUBES_COUNT }) {
       frames={Infinity}
       ref={ref}
     >
-      <roundedBoxGeometry args={[2, 2, 2, 2, 0.15]} />{' '}
-      {/* Increased cube size from 1 to 2 */}
-      <meshStandardMaterial />
+      <roundedBoxGeometry args={[2, 2, 2, 2, 0.15]} /> <meshStandardMaterial />
       {positions.map((position, index) => (
         <Cube
           key={index}

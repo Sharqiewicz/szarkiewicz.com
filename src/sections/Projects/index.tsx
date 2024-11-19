@@ -9,30 +9,40 @@ const PROJECT_WALLET = {
   id: 1,
   color: '#4ECDC4',
   image: '/logos/deloitte.png',
+  blockchain: 'Polkadot',
+  url: 'https://chromewebstore.google.com/detail/deloitte-credentials-wall/bflldjbbpcjgooclhpmhdhioebmnnkcm',
 };
 
 const PROJECT_KYC = {
   id: 2,
   color: '#4ECDC4',
   image: '/logos/deloitte.png',
+  blockchain: 'Polkadot',
+  url: 'https://kyc-credentials.com/home',
 };
 
 const PROJECT_PORTAL = {
   id: 3,
   color: '#907EA0',
   image: '/logos/pendulum.svg',
+  blockchain: 'Polkadot',
+  url: 'https://portal.pendulumchain.org/',
 };
 
 const PROJECT_FAUCET = {
   id: 4,
   color: '#4EE59A',
   image: '/logos/foucoco.svg',
+  blockchain: 'Polkadot',
+  url: 'https://faucet-service.pendulumchain.tech/',
 };
 
 const PROJECT_VORTEX = {
   id: 5,
   color: '#0F4DC0',
   image: '/logos/vortex.svg',
+  blockchain: 'Ethereum',
+  url: 'https://app.vortexfinance.co/',
 };
 
 const projects = [
@@ -215,7 +225,7 @@ export const Projects = () => {
   return (
     <section ref={sectionRef} className="h-[1800vh] pt-48 mx-20 pb-[300px]">
       <div className="sticky top-24 left-0 flex">
-        <div className="border border-accent border-2 rounded-xl w-[477px] h-[866px] overflow-hidden relative">
+        <div className="border border-accent mr-4 border-2 rounded-xl min-w-[477px] h-[866px] overflow-hidden relative">
           {projects.map((project, index) => (
             <>
               <div
@@ -240,7 +250,7 @@ export const Projects = () => {
             </>
           ))}
         </div>
-        <div className="ml-12 flex flex-col gap-8">
+        <div className="flex flex-col gap-8 grow">
           {projects.map((project, index) => {
             const isAlreadyDisplayed = projects
               .slice(0, index)
@@ -255,53 +265,59 @@ export const Projects = () => {
               <div
                 key={project.project.id}
                 style={{ backgroundColor: project.project.color }}
-                className={`rounded-xl transition-all duration-500 overflow-hidden
-                  ${isCurrent ? 'px-12 py-8 h-[300px]' : 'px-8 py-4 h-[100px]'}
+                className={`
+                  rounded-xl transition-all duration-500 overflow-hidden
+                  flex justify-center items-center flex-wrap
+                  shadow-md
+                  ${isCurrent ? 'h-[220px]' : 'h-[80px]'}
                   ${
                     index <= currentIndex
                       ? 'opacity-100 translate-y-0'
                       : 'opacity-0 translate-y-8'
-                  }`}
+                  }
+                  hover:shadow-lg hover:scale-[1.02] cursor-pointer
+                `}
               >
-                <div
-                  className={`transition-all duration-500 ${
-                    isCurrent ? 'scale-100' : 'scale-75'
-                  }`}
-                >
+                <div className="w-full flex justify-between items-center">
                   <Image
                     src={project.project.image}
                     alt={project.title}
-                    width={150}
-                    height={80}
-                    className="transition-all duration-500"
+                    width={200}
+                    height={120}
+                    className="transition-all duration-500 hover:scale-105"
                   />
+                  <div className="bg-black text-anybody text-white text-xs px-2 py-1 rounded-full inline-block mr-6">
+                    <p className="opacity-100">{project.project.blockchain}</p>
+                  </div>
                 </div>
 
                 <div
-                  className={`transition-all duration-500 ${
-                    isCurrent
-                      ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 -translate-y-4'
-                  }`}
+                  className={`
+                    transition-all duration-500
+                    ${
+                      isCurrent
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 -translate-y-4'
+                    }
+                  `}
                 >
-                  <h2 className="text-3xl mt-6">{project.title}</h2>
-
-                  <div className="flex items-center mt-4">
+                  <div className="flex items-center mt-1 group cursor-pointer">
                     <Image
-                      className="hover:scale-105 transition opacity-80 hover:opacity-100"
-                      src="/socials/x.svg"
-                      width={18}
-                      height={18}
-                      alt={`${project.title} x.com`}
+                      className="opacity-80 group-hover:opacity-100 transition-opacity"
+                      src="/socials/website.svg"
+                      width={20}
+                      height={20}
+                      alt={`${project.title} website`}
                     />
-                    <p className="text-anybody text-gray-200 font-bold text-sm ml-1">
-                      {`@${project.title}`}
-                    </p>
+                    <a
+                      href={project.project.url}
+                      rel="norefferer"
+                      target="blank"
+                      className="text-anybody text-gray-100 font-semibold text-base ml-2 group-hover:underline"
+                    >
+                      {`@${project.title.replaceAll(' ', '')}`}
+                    </a>
                   </div>
-
-                  <p className="text-anybody text-gray-200 font-bold text-sm mt-4">
-                    Project Description Lorem ipsum dolor, sit amet consectetur.
-                  </p>
                 </div>
               </div>
             );
