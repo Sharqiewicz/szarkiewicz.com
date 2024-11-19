@@ -9,27 +9,27 @@ const projects = [
   {
     id: 1,
     title: 'Deloitte Credential Wallet',
-    image: '/projects/deloitte_1.jpg',
+    image: '/projects/wallet_1.png',
   },
   {
     id: 2,
     title: 'Deloitte Credential Wallet',
-    image: '/projects/deloitte_2.jpg',
+    image: '/projects/wallet_2.png',
   },
   {
     id: 3,
     title: 'Deloitte Credential Wallet',
-    image: '/projects/deloitte_3.jpg',
+    image: '/projects/wallet_3.png',
   },
   {
     id: 4,
     title: 'Deloitte Credential Wallet',
-    image: '/projects/deloitte_4.jpg',
+    image: '/projects/wallet_4.png',
   },
   {
     id: 5,
     title: 'Deloitte Credential Wallet',
-    image: '/projects/deloitte_5.jpg',
+    image: '/projects/wallet_5.png',
   },
   {
     id: 6,
@@ -74,73 +74,93 @@ const projects = [
 ];
 
 export const Projects = () => {
-  const containerRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const projectRefs = useRef([]);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    const container = containerRef.current;
-
-    // Initialize all projects
     projectRefs.current.forEach((projectRef, index) => {
       gsap.set(projectRef, {
         y: index === 0 ? '0%' : '100%',
-        opacity: index === 0 ? 1 : 0,
+        filter: 'blur(0px)',
       });
     });
 
-    // Initialize Lenis
-    const lenis = new Lenis({
-      smooth: true,
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smoothTouch: true,
-    });
+    const lenis = new Lenis();
 
-    function raf(time) {
+    function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
 
-    // Scroll-based animations using Lenis
-    lenis.on('scroll', ({ scroll, limit }) => {
-      const progress = scroll / limit;
-      const newIndex = Math.round(progress * (projects.length - 1));
+    lenis.on('scroll', (e) => {
+      const section = sectionRef.current;
+      if (!section) return;
 
-      if (
-        newIndex !== currentIndex &&
-        newIndex >= 0 &&
-        newIndex < projects.length
-      ) {
-        // Animate previous project out
-        if (projectRefs.current[currentIndex]) {
-          gsap.to(projectRefs.current[currentIndex], {
-            y: '-100%',
-            opacity: 0,
-            duration: 0.5,
-            ease: 'power2.inOut',
-          });
+      const rect = section.getBoundingClientRect();
+      const stickyOffset = 96;
+
+      if (rect.top <= stickyOffset) {
+        const scrollableHeight = section.offsetHeight - window.innerHeight;
+        const scrollProgress =
+          Math.abs(rect.top - stickyOffset) / scrollableHeight;
+        const newIndex = Math.min(
+          Math.floor((scrollProgress * projects.length) / 1.001),
+          projects.length - 1
+        );
+
+        if (
+          newIndex !== currentIndex &&
+          newIndex >= 0 &&
+          newIndex < projects.length
+        ) {
+          const isScrollingUp = e.velocity < 0;
+
+          if (projectRefs.current[currentIndex]) {
+            gsap
+              .timeline()
+              .fromTo(
+                projectRefs.current[currentIndex],
+                {
+                  y: '0%',
+                  duration: 1,
+                  scale: 1,
+                  opacity: 1,
+                },
+                {
+                  filter: 'blur(2px)',
+                  duration: 0.5,
+                  opacity: 1,
+                  y: isScrollingUp ? '100%' : '-20%',
+                }
+              )
+              .to(projectRefs.current[currentIndex], {
+                opacity: 0,
+                duration: isScrollingUp ? 0.001 : 0.5,
+              });
+          }
+
+          if (projectRefs.current[newIndex]) {
+            gsap.fromTo(
+              projectRefs.current[newIndex],
+              {
+                y: isScrollingUp ? '-20%' : '100%',
+                duration: isScrollingUp ? 1 : 0.5,
+              },
+              {
+                y: '0%',
+                filter: 'blur(0px)',
+                opacity: 1,
+                scale: 1,
+                duration: 1,
+              },
+              isScrollingUp ? '=0' : '-=0.8'
+            );
+          }
+
+          setCurrentIndex(newIndex);
         }
-
-        // Animate new project in
-        if (projectRefs.current[newIndex]) {
-          gsap.fromTo(
-            projectRefs.current[newIndex],
-            {
-              y: '100%',
-              opacity: 0,
-            },
-            {
-              y: '0%',
-              opacity: 1,
-              duration: 0.5,
-              ease: 'power2.inOut',
-            }
-          );
-        }
-
-        setCurrentIndex(newIndex);
       }
     });
 
@@ -150,7 +170,7 @@ export const Projects = () => {
   }, [currentIndex]);
 
   return (
-    <section ref={containerRef} className="h-[500vh] pt-48 mx-20">
+    <section ref={sectionRef} className="h-[1800vh] pt-48 mx-20">
       <div className="sticky top-24 left-0">
         <div className="border border-accent border-4 rounded-xl w-[477px] h-[866px] overflow-hidden relative">
           {projects.map((project, index) => (

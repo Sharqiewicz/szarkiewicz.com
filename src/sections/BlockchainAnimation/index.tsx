@@ -165,8 +165,9 @@ export const BlockchainAnimation = () => (
       My Web3/Blockchain Projects
     </p>
     <p className=" text-gray-300 text-s mx-auto text-center">
-      Although I have built 20+ apps in my life (frontend and mobile), here - in
-      this Blockchain I am only posting blockchain-related ones.
+      Although I have built 30+ commercial apps in my life (frontend and
+      mobile), here - in this Blockchain - I am only posting blockchain-related
+      ones.
     </p>
     <p className="text-gray-300 text-s mx-auto text-center">
       (I was developing non-blockchain apps for 4+ years, ask me for more
