@@ -59,13 +59,16 @@ function Cube({
   setClicked: (value: boolean) => void;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const ref = useRef();
 
   useFrame(() => {
     if (ref.current) {
       //@ts-ignore
       ref.current.color.lerp(
-        isHovered ? new THREE.Color(detail.color) : new THREE.Color(0xffffff),
+        isHovered || isClicked
+          ? new THREE.Color(detail.color)
+          : new THREE.Color(0xffffff),
         0.1
       );
     }
@@ -84,10 +87,13 @@ function Cube({
         setIsHovered(false);
         setHovered(false);
       }}
-      //@ts-ignore todo
-      onClick={() => setClicked((prev) => !prev)}
+      onClick={() => {
+        setIsClicked(!isClicked);
+        //@ts-ignore todo
+        setClicked((prev) => !prev);
+      }}
     >
-      {isHovered && (
+      {(isHovered || isClicked) && (
         <Html distanceFactor={10}>
           <div
             style={{
