@@ -28,7 +28,7 @@ interface CubeDetail {
 }
 
 const cubeDetails: CubeDetail[] = [
-  { color: '#4ECDC4', description: 'Deloitte Credential Wallet' },
+  { color: '#0D838F', description: 'Deloitte Credential Wallet' },
   {
     color: '#4ECDC4',
     description: 'Deloitte KYC-Credentials',
