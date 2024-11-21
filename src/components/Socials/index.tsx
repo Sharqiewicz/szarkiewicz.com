@@ -29,33 +29,52 @@ const SOCIALS = [
     src: '/socials/mail.svg',
     url: 'mailto:szarkiewiczmail@gmail.com',
   },
-];
+] as const;
 
 const MIN_PROGRESS = 0.001;
 const MAX_PROGRESS = 0.98;
 
+type ScrollState = {
+  scroll: number;
+  limit: number;
+};
+
 export const Socials = () => {
-  const sectionRef = useRef(null);
-  const socialsRef = useRef(null);
-  const scrollRef = useRef(0);
-  const limitRef = useRef(0);
-  const hoverAnimationRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const socialsRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRef<ScrollState>({ scroll: 0, limit: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [showFooter, setShowFooter] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768);
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
     const socials = socialsRef.current;
+    if (!section || !socials) return;
 
     const tl = gsap.timeline();
     tl.fromTo(
       section,
       { width: 0, height: 56, display: 'none' },
-      { width: 400, display: 'flex', duration: 1 }
+      {
+        width: isMobile ? 320 : 400,
+        display: 'flex',
+        duration: 1,
+      }
     );
 
     tl.fromTo(
-      socials.children,
+      Array.from(socials.children),
       { opacity: 0, y: 20 },
       {
         opacity: 1,
@@ -64,43 +83,41 @@ export const Socials = () => {
         duration: 0.5,
       }
     );
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const section = sectionRef.current;
+    if (!section) return;
 
     const lenis = new Lenis();
+    let animationFrame: number;
 
-    function raf(time: number) {
+    const animate = (time: number) => {
       lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+      animationFrame = requestAnimationFrame(animate);
+    };
+    animationFrame = requestAnimationFrame(animate);
 
-    // Scroll-based animations using Lenis
-    lenis.on('scroll', ({ scroll, limit }) => {
-      scrollRef.current = scroll;
-      limitRef.current = limit;
-
+    const handleScroll = ({ scroll, limit }: ScrollState) => {
+      scrollState.current = { scroll, limit };
       const progress = scroll / limit;
 
-      if (!(progress > MIN_PROGRESS) && !(progress < MAX_PROGRESS)) {
-        if (isHovered) return;
-      }
+      if (isHovered) return;
 
-      // Skip scroll animation if hover animation is active
-      if (hoverAnimationRef.current?.isActive()) return;
+      const baseStyles = {
+        duration: 0.3,
+        borderRadius: '1.5rem',
+        height: 56,
+        bottom: '2.5rem',
+      };
 
       if (progress < MIN_PROGRESS) {
         gsap.to(section, {
-          width: 400,
+          ...baseStyles,
+          width: isMobile ? 320 : 400,
           left: '6%',
-          duration: 0.3,
-          borderRadius: '1.5rem',
-          height: 56,
-          bottom: '2.5rem',
         });
-        if (showFooter) setShowFooter(false);
+        setShowFooter(false);
       } else if (progress >= MAX_PROGRESS) {
         gsap.to(section, {
           width: '100%',
@@ -110,67 +127,70 @@ export const Socials = () => {
           height: 154,
           bottom: 0,
         });
-        if (!showFooter) setShowFooter(true);
+        setShowFooter(true);
+        return;
       } else {
         gsap.to(section, {
+          ...baseStyles,
           width: 80,
-          left: window.innerWidth <= 768 ? '3%' : '46%',
-          duration: 0.3,
-          borderRadius: '1.5rem',
-          height: 56,
-          bottom: '2.5rem',
+          left: isMobile ? '3%' : '46%',
         });
-        if (showFooter) setShowFooter(false);
+        setShowFooter(false);
       }
-    });
+    };
 
-    section.addEventListener('mouseenter', () => {
-      const scroll = scrollRef.current;
-      const limit = limitRef.current;
-      if (!lenis) return;
+    lenis.on('scroll', handleScroll);
 
+    const handleInteraction = () => {
+      const { scroll, limit } = scrollState.current;
       const progress = scroll / limit;
 
       if (progress > MIN_PROGRESS && progress < MAX_PROGRESS) {
-        setIsHovered(true);
-        hoverAnimationRef.current = gsap.timeline();
-        hoverAnimationRef.current.to(section, {
-          width: 400,
+        setIsHovered((prev) => !prev);
+        gsap.to(section, {
+          width: isHovered ? 80 : 320,
           duration: 0.3,
         });
       }
-    });
+    };
 
-    section.addEventListener('mouseleave', () => {
-      const scroll = scrollRef.current;
-      const limit = limitRef.current;
-      if (!lenis) return;
-
+    const handleMouseLeave = () => {
+      const { scroll, limit } = scrollState.current;
       const progress = scroll / limit;
 
       if (progress > MIN_PROGRESS && progress < MAX_PROGRESS) {
-        console.log(progress);
-        console.log('HOVERED 2');
         setIsHovered(false);
-        hoverAnimationRef.current = gsap.timeline();
-        hoverAnimationRef.current.to(section, {
+        gsap.to(section, {
           width: 80,
           duration: 0.3,
         });
       }
-    });
+    };
+
+    if (isMobile) {
+      section.addEventListener('click', handleInteraction);
+    } else {
+      section.addEventListener('mouseenter', handleInteraction);
+      section.addEventListener('mouseleave', handleMouseLeave);
+    }
 
     return () => {
+      cancelAnimationFrame(animationFrame);
       lenis.destroy();
-      section.removeEventListener('mouseenter', null);
-      section.removeEventListener('mouseleave', null);
+
+      if (isMobile) {
+        section?.removeEventListener('click', handleInteraction);
+      } else {
+        section?.removeEventListener('mouseenter', handleInteraction);
+        section?.removeEventListener('mouseleave', handleMouseLeave);
+      }
     };
-  }, [isHovered, showFooter]);
+  }, [isHovered, isMobile]);
 
   return (
     <section
       ref={sectionRef}
-      className="border border-accent border-2 bg-primary rounded-3xl py-3 px-6 flex-col justify-center items-center fixed bottom-[7%] sm:bottom-[15%] lg:bottom-10 z-50 cursor-pointer"
+      className="border border-accent border-2 bg-primary rounded-3xl py-3 px-3 sm:px-6 flex-col justify-center items-center fixed bottom-[7%] sm:bottom-[15%] lg:bottom-10 z-50 cursor-pointer"
     >
       <div className="flex justify-between w-full">
         <Image
@@ -178,10 +198,11 @@ export const Socials = () => {
           width={30}
           height={30}
           alt="Sharqiewicz logo"
+          className="sm:mr-3"
         />
         <div
           ref={socialsRef}
-          className="grid grid-cols-5 gap-6 items-center mx-auto"
+          className="grid grid-cols-5 gap-3 sm:gap-6 items-center mx-auto"
         >
           {SOCIALS.map((social) => (
             <a
@@ -202,7 +223,7 @@ export const Socials = () => {
         </div>
       </div>
       {showFooter && (
-        <footer className="text-center my-5 ml-7 font-anybody text-gray-400 font-bold text-xs text-center">
+        <footer className="text-center my-5 ml-7 font-anybody text-gray-400 font-bold text-xs">
           Made with <span className="text-accent">❤</span> by Kacper Szarkiewicz
         </footer>
       )}
