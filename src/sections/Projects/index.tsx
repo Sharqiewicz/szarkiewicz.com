@@ -7,8 +7,8 @@ import Image from 'next/image';
 
 const PROJECT_WALLET = {
   id: 1,
-  color: '#4ECDC4',
-  image: '/logos/deloitte.png',
+  color: '#0D838F',
+  image: '/logos/deloitte.svg',
   blockchain: 'Polkadot',
   url: 'https://chromewebstore.google.com/detail/deloitte-credentials-wall/bflldjbbpcjgooclhpmhdhioebmnnkcm',
 };
@@ -16,7 +16,7 @@ const PROJECT_WALLET = {
 const PROJECT_KYC = {
   id: 2,
   color: '#4ECDC4',
-  image: '/logos/deloitte.png',
+  image: '/logos/deloitte.svg',
   blockchain: 'Polkadot',
   url: 'https://kyc-credentials.com/home',
 };
@@ -63,18 +63,6 @@ const projects = [
     title: 'Deloitte Credential Wallet',
     project: PROJECT_WALLET,
     image: '/projects/wallet_3.png',
-  },
-  {
-    id: 4,
-    title: 'Deloitte Credential Wallet',
-    project: PROJECT_WALLET,
-    image: '/projects/wallet_4.png',
-  },
-  {
-    id: 5,
-    title: 'Deloitte Credential Wallet',
-    project: PROJECT_WALLET,
-    image: '/projects/wallet_5.png',
   },
   {
     id: 6,
@@ -223,9 +211,9 @@ export const Projects = () => {
   }, [currentIndex]);
 
   return (
-    <section ref={sectionRef} className="h-[1800vh] pt-48 mx-20 pb-[300px]">
+    <section ref={sectionRef} className="h-[1400vh] pt-48 mx-20 pb-[300px]">
       <div className="sticky top-24 left-0 flex">
-        <div className="border border-accent mr-4 border-2 rounded-xl min-w-[477px] h-[866px] overflow-hidden relative">
+        <div className="hover:scale-[1.02] duration-500 transition border border-primary mr-4 border-2 rounded-xl min-w-[477px] h-[866px] overflow-hidden relative">
           {projects.map((project, index) => (
             <>
               <div
@@ -264,18 +252,16 @@ export const Projects = () => {
             return (
               <div
                 key={project.project.id}
-                style={{ backgroundColor: project.project.color }}
+                style={{ borderLeftColor: project.project.color }}
                 className={`
-                  rounded-xl transition-all duration-500 overflow-hidden
-                  flex justify-center items-center flex-wrap
-                  shadow-md
-                  ${isCurrent ? 'h-[220px]' : 'h-[80px]'}
+                  bg-[#3B3B58] rounded-xl transition-all duration-500 overflow-hidden flex border border-l-8 justify-center items-center flex-wrap shadow-xl
+                  ${isCurrent ? 'h-[160px]' : 'h-[80px]'}
                   ${
                     index <= currentIndex
                       ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 translate-y-8'
+                      : 'opacity-0 hidden translate-y-8'
                   }
-                  hover:shadow-lg hover:scale-[1.02] cursor-pointer
+                  hover:shadow-lg hover:scale-[1.02] cursor-pointer hover:h-[160px] group
                 `}
               >
                 <div className="w-full flex justify-between items-center">
@@ -299,9 +285,10 @@ export const Projects = () => {
                         ? 'opacity-100 translate-y-0'
                         : 'opacity-0 -translate-y-4'
                     }
+                    group-hover:opacity-100 group-hover:translate-y-0
                   `}
                 >
-                  <div className="flex items-center mt-1 group cursor-pointer">
+                  <div className="flex items-center mt-1 cursor-pointer">
                     <Image
                       className="opacity-80 group-hover:opacity-100 transition-opacity"
                       src="/socials/website.svg"
