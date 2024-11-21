@@ -100,7 +100,7 @@ export const DistortedImage = () => {
 
   return (
     <mesh
-      //@ts-expect-error Version mismatch
+      //@ts-ignore
       ref={meshRef}
       onPointerMove={handlePointerMove}
       onPointerOver={handlePointerEnter}

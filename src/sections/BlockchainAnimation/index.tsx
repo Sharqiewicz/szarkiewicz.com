@@ -61,7 +61,7 @@ function Cube({
 
   useFrame(() => {
     if (ref.current) {
-      //@ts-expect-error todo
+      //@ts-ignore
       ref.current.color.lerp(
         isHovered ? new THREE.Color(detail.color) : new THREE.Color(0xffffff),
         0.1
@@ -72,7 +72,7 @@ function Cube({
   return (
     <Instance
       ref={ref}
-      //@ts-expect-error todo
+      //@ts-ignore todo
       position={position}
       onPointerOver={() => {
         setIsHovered(true);
@@ -117,7 +117,7 @@ function Cubes({ gap = 0.5, count = CUBES_COUNT }) {
         0.05
       );
 
-      //@ts-expect-error todo
+      //@ts-ignore todo
       ref.current.children.forEach((child, i) => {
         const [x] = positions[i];
         const targetY = Math.sin(time + x / 2) * 2;
@@ -145,7 +145,7 @@ function Cubes({ gap = 0.5, count = CUBES_COUNT }) {
       castShadow
       receiveShadow
       frames={Infinity}
-      //@ts-expect-error todo
+      //@ts-ignore todo
       ref={ref}
     >
       {/* @ts-expect-error todo */}
