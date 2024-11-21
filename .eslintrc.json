@@ -1,3 +1,10 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-ignore": false, // Allow the use of @ts-ignore
+        "ts-expect-error": true, // Enforce @ts-expect-error when applicable
+    }
+  ]
 }
