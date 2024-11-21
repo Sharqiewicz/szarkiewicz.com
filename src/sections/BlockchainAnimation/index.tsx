@@ -174,7 +174,7 @@ export const BlockchainAnimation = () => (
     <Canvas
       style={{
         height: 500,
-        width: '100vw',
+        width: '100%',
       }}
       shadows
       gl={{ antialias: false }}

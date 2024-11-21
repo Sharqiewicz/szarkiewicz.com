@@ -211,34 +211,36 @@ export const Projects = () => {
   }, [currentIndex]);
 
   return (
-    <section ref={sectionRef} className="h-[1400vh] pt-48 mx-20 pb-[300px]">
-      <div className="sticky top-24 left-0 flex">
-        <div className="hover:scale-[1.02] duration-500 transition border border-primary mr-4 border-2 rounded-xl min-w-[477px] h-[866px] overflow-hidden relative">
+    <section
+      ref={sectionRef}
+      className="h-[1400vh] pt-48 mx-4 sm:mx-20 pb-[300px]"
+    >
+      <div className="sticky top-4 md:top-12 left-0 flex flex-col lg:flex-row justify-center">
+        <div className="mx-auto lg:mx-0 hover:scale-[1.02] duration-500 transition border border-primary mb-8 lg:mb-0 lg:mr-4 border-2 rounded-xl w-full md:w-[477px] h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] xl:h-[90vh] overflow-hidden relative">
           {projects.map((project, index) => (
-            <>
-              <div
-                key={project.id}
-                ref={(el) => (projectRefs.current[index] = el)}
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%',
-                }}
-              >
-                <div className="relative w-full h-full">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    width={477}
-                    height={866}
-                    className="w-full h-full object-cover object-center rounded-lg"
-                  />
-                </div>
+            <div
+              key={project.id}
+              ref={(el) => (projectRefs.current[index] = el)}
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+              }}
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover object-center rounded-lg"
+                  priority={index === 0}
+                />
               </div>
-            </>
+            </div>
           ))}
         </div>
-        <div className="flex flex-col gap-8 grow">
+        <div className="flex flex-col gap-8 items-center">
           {projects.map((project, index) => {
             const isAlreadyDisplayed = projects
               .slice(0, index)
@@ -254,12 +256,17 @@ export const Projects = () => {
                 key={project.project.id}
                 style={{ borderLeftColor: project.project.color }}
                 className={`
-                  bg-[#3B3B58] rounded-xl transition-all duration-500 overflow-hidden flex border border-l-8 justify-center items-center flex-wrap shadow-xl
-                  ${isCurrent ? 'h-[160px]' : 'h-[80px]'}
+                  bg-[#3B3B58] w-full md:w-[477px] rounded-xl transition-all duration-500 overflow-hidden flex border border-l-8 justify-center items-center flex-wrap shadow-xl
+                  ${isCurrent ? 'h-[120px] md:h-[160px]' : 'h-[80px]'}
                   ${
                     index <= currentIndex
+                      ? 'lg:opacity-100 lg:translate-y-0'
+                      : 'lg:opacity-0 lg:hidden lg:translate-y-8'
+                  }
+                  ${
+                    project.project.id === projects[currentIndex].project.id
                       ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 hidden translate-y-8'
+                      : 'hidden lg:block'
                   }
                   hover:shadow-lg hover:scale-[1.02] cursor-pointer hover:h-[160px] group
                 `}
