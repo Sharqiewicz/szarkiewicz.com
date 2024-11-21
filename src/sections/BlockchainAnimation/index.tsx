@@ -51,10 +51,12 @@ function Cube({
   position,
   detail,
   setHovered,
+  setClicked,
 }: {
   position: number[];
   detail: CubeDetail;
   setHovered: (value: boolean) => void;
+  setClicked: (value: boolean) => void;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const ref = useRef();
@@ -82,6 +84,8 @@ function Cube({
         setIsHovered(false);
         setHovered(false);
       }}
+      //@ts-ignore todo
+      onClick={() => setClicked((prev) => !prev)}
     >
       {isHovered && (
         <Html distanceFactor={10}>
@@ -104,6 +108,7 @@ function Cubes({ gap = 0.5, count = CUBES_COUNT }) {
   const ref = useRef();
   const positions = usePositions(count, gap);
   const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
   const animationSpeed = useRef(1);
 
   useFrame((state) => {
@@ -113,7 +118,7 @@ function Cubes({ gap = 0.5, count = CUBES_COUNT }) {
       // Smoothly adjust animation speed
       animationSpeed.current = THREE.MathUtils.lerp(
         animationSpeed.current,
-        hovered ? 0 : 1,
+        hovered || clicked ? 0 : 1,
         0.05
       );
 
@@ -156,6 +161,7 @@ function Cubes({ gap = 0.5, count = CUBES_COUNT }) {
           position={position}
           detail={cubeDetails[index]}
           setHovered={setHovered}
+          setClicked={setClicked}
         />
       ))}
     </Instances>
