@@ -172,7 +172,7 @@ export const Socials = () => {
   return (
     <section
       ref={sectionRef}
-      className="border border-accent border-2 bg-primary rounded-3xl py-3 px-6 flex-col justify-center items-center fixed bottom-10 z-50 cursor-pointer"
+      className="border border-accent border-2 bg-primary rounded-3xl py-3 px-6 flex-col justify-center items-center fixed bottom-[7%] sm:bottom-[15%] lg:bottom-10 z-50 cursor-pointer"
     >
       <div className="flex justify-between w-full">
         <Image

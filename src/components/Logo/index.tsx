@@ -3,9 +3,13 @@ import { gsap } from 'gsap';
 
 interface LogoProps {
   xStartPosition?: number;
+  xEndPosition?: number;
 }
 
-export const Logo: FC<LogoProps> = ({ xStartPosition = -800 }) => {
+export const Logo: FC<LogoProps> = ({
+  xStartPosition = -800,
+  xEndPosition = 0,
+}) => {
   const svgRef = useRef(null);
 
   useEffect(() => {
@@ -17,11 +21,11 @@ export const Logo: FC<LogoProps> = ({ xStartPosition = -800 }) => {
       {
         stagger: 0.1,
         duration: 1,
-        x: 0,
+        x: xEndPosition,
         ease: 'power3.inOut',
       }
     );
-  }, [xStartPosition]);
+  }, [xStartPosition, xEndPosition]);
 
   const handleMouseEnter = () => {
     gsap.to(svgRef.current?.children, {
