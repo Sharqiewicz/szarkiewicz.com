@@ -10,11 +10,11 @@ export const Logo: FC<LogoProps> = ({
   xStartPosition = -800,
   xEndPosition = 0,
 }) => {
-  const svgRef = useRef(null);
+  const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     gsap.fromTo(
-      svgRef.current?.children,
+      svgRef.current!.children,
       {
         x: xStartPosition,
       },
@@ -28,7 +28,7 @@ export const Logo: FC<LogoProps> = ({
   }, [xStartPosition, xEndPosition]);
 
   const handleMouseEnter = () => {
-    gsap.to(svgRef.current?.children, {
+    gsap.to(svgRef.current!.children, {
       x: -20,
       stagger: 0.1,
       ease: 'power3.out',
@@ -36,7 +36,7 @@ export const Logo: FC<LogoProps> = ({
   };
 
   const handleMouseLeave = () => {
-    gsap.to(svgRef.current?.children, {
+    gsap.to(svgRef.current!.children, {
       x: 0,
       stagger: 0.1,
       ease: 'power3.out',

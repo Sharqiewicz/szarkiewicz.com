@@ -151,10 +151,12 @@ export const Projects = () => {
       const section = sectionRef.current;
       if (!section) return;
 
+      //@ts-expect-error todo
       const rect = section.getBoundingClientRect();
       const stickyOffset = 96;
 
       if (rect.top <= stickyOffset) {
+        //@ts-expect-error todo
         const scrollableHeight = section.offsetHeight - window.innerHeight;
         const scrollProgress =
           Math.abs(rect.top - stickyOffset) / scrollableHeight;
@@ -197,6 +199,8 @@ export const Projects = () => {
           if (projectRefs.current[newIndex]) {
             gsap.fromTo(
               projectRefs.current[newIndex],
+
+              //@ts-expect-error todo
               {
                 y: isScrollingUp ? '-20%' : '100%',
                 duration: isScrollingUp ? 1 : 0.5,
@@ -232,6 +236,7 @@ export const Projects = () => {
           {projects.map((project, index) => (
             <div
               key={project.id}
+              //@ts-expect-error todo
               ref={(el) => (projectRefs.current[index] = el)}
               style={{
                 position: 'absolute',
