@@ -20,8 +20,40 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'szarkiewicz.com',
-  description: 'Kacper Szarkiewicz Sharqi personal website',
+  title: 'Kacper Szarkiewicz',
+  description:
+    'Personal website of Kacper Szarkiewicz (Sharqi) - Frontend Engineer specializing in blockchain technologies',
+  authors: [{ name: 'Kacper Szarkiewicz', url: 'https://szarkiewicz.com' }],
+  keywords: [
+    'developer',
+    'blockchain',
+    'web development',
+    'full stack',
+    'software engineer',
+    'frontend engineer',
+    'frontend developer',
+    'blockchain engineer',
+    'blockchain developer',
+    'web3',
+    'web3 developer',
+    'web3 engineer',
+    'frontend',
+    'blockchain',
+  ],
+  robots: 'index, follow',
+  openGraph: {
+    title: 'szarkiewicz.com',
+    description: 'Personal website of Kacper Szarkiewicz (Sharqi)',
+    url: 'https://szarkiewicz.com',
+    siteName: 'szarkiewicz.com',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'szarkiewicz.com',
+    description: 'Personal website of Kacper Szarkiewicz (Sharqi)',
+  },
 };
 
 export default function RootLayout({
@@ -31,6 +63,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      </head>
       <body
         className={`${anybodyCondensed.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >

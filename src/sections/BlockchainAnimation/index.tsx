@@ -159,15 +159,15 @@ function Cubes({ gap = 0.5, count = CUBES_COUNT }) {
 
 export const BlockchainAnimation = () => (
   <section className="bg-primary pt-20">
-    <p className="font-anybody text-gray-300 text-3xl pt-5 mx-auto text-center">
+    <p className="font-anybody text-gray-300 text-2xl font-bold sm:font-normal sm:text-3xl pt-5 mx-4 sm:mx-auto text-center">
       My Web3/Blockchain Projects
     </p>
-    <p className=" text-gray-300 text-s mx-auto text-center">
+    <p className=" text-gray-300 text-s mx-auto text-center  mx-4 sm:mx-auto">
       Although I have built 30+ commercial apps in my life (frontend and
       mobile), here - in this Blockchain - I am only posting blockchain-related
       ones.
     </p>
-    <p className="text-gray-300 text-s mx-auto text-center">
+    <p className="text-gray-300 text-s mx-auto text-center  mx-4 sm:mx-auto">
       (I was developing non-blockchain apps for 4+ years, ask me for more
       details)
     </p>

@@ -114,7 +114,7 @@ export const Socials = () => {
       } else {
         gsap.to(section, {
           width: 80,
-          left: '46%',
+          left: window.innerWidth <= 768 ? '3%' : '46%',
           duration: 0.3,
           borderRadius: '1.5rem',
           height: 56,
@@ -132,8 +132,6 @@ export const Socials = () => {
       const progress = scroll / limit;
 
       if (progress > MIN_PROGRESS && progress < MAX_PROGRESS) {
-        console.log(progress);
-        console.log('HOVERED 1');
         setIsHovered(true);
         hoverAnimationRef.current = gsap.timeline();
         hoverAnimationRef.current.to(section, {
